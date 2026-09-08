@@ -1,0 +1,75 @@
+
+menuconfig LED_SUBSYSTEM
+    bool "LED Subsystem"
+    default y
+    help
+      This option enables the LED subsystem, which provides support for
+      controlling and managing LEDs on the system.
+
+if LED_SUBSYSTEM
+
+choice
+    prompt "LED blink sleep time"
+    default LED_BLINK_SLEEP_TIME_MEDIUM
+    help 
+      This option enables the LED blink sleep timer, which allows for
+      controlling the blinking behavior of LEDs during system sleep.
+
+    config LED_BLINK_SLEEP_TIME_FAST
+    bool "500 ms (fast)"  
+
+    config LED_BLINK_SLEEP_TIME_MEDIUM
+    bool "1s (medium)"
+    
+    config LED_BLINK_SLEEP_TIME_SLOW
+    bool "2s (slow)"
+
+endchoice      
+
+menuconfig LED_ADVANCED_SETTINGS
+    bool "Advanced LED Settings"
+    help
+      This option enables advanced settings for the LED subsystem, allowing
+      for more fine-grained control over LED behavior and configuration. 
+      
+  if LED_ADVANCED_SETTINGS
+
+   config LED_BRIGHTNESS
+      int "LED Brightness (0-100)"
+      range 0 100
+      default 100
+      help
+        This option enables brightness control for LEDs, allowing for
+        adjusting the intensity of the LED output.
+        
+    config LED_FADE_DURATION
+      int "LED fade duration (ms)"
+      range 0 5000
+      default 500
+      help
+        This option enables fade duration control for LEDs, allowing for
+        adjusting the time it takes for the LED to fade in or out.    
+
+
+
+    menu "Expert settings"
+      
+      config ENABLE_LED_DEBUGGING
+        bool "Enable LED debugging"
+        default n
+        help
+          This option enables debugging features for the LED subsystem, allowing
+          for logging and troubleshooting of LED-related issues.
+
+      config LED_BLINK_PATTERN
+        bool "Custom blink pattern"    
+        default n
+        help
+          This option enables the ability to define custom blink patterns for LEDs,
+          allowing for more complex and varied LED behaviors.
+
+    endmenu    
+  endif
+endif
+
+source "Kconfig.zephyr"
